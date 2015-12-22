@@ -7,7 +7,8 @@ https://nodejs.org
 `git clone https://github.com/TropicalDandies/rhizome.git`   
 You may be required to input your github account credential.
 
-3. Change directory to your local repository. As default you should be in your user folder. In that case, just  `cd rhizome`
+3. Change directory to your local repository. As default you should be in your user folder. In that case, just  
+`cd rhizome`
 
 4. `npm install`  
 on your terminal to install all node module dependencies.
