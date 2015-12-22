@@ -7,9 +7,11 @@ https://nodejs.org
 `git clone https://github.com/TropicalDandies/rhizome.git`   
 You may be required to input your github account credential.
 
-3. `npm install`  
+3. Change directory to your local repository. As default you should be in your user folder. In that case, just  `cd rhizome`
+
+4. `npm install`  
 on your terminal to install all node module dependencies.
 
-4. `gulp dev`
+5. `gulp dev`
 on your terminal to start gulp task for development.  
 Input `localhost:5000` in your browser.
