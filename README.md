@@ -15,4 +15,4 @@ on your terminal to install all node module dependencies.
 
 5. `gulp dev`
 on your terminal to start gulp task for development.  
-Input `localhost:5000` in your browser.
+Input `localhost:5050` in your browser.
