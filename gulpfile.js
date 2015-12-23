@@ -123,10 +123,11 @@ gulp.task('watchify', function() {
 // Based on http://gotofritz.net/blog/geekery/how-to-prevent-sass-errors-stopping-gulp-watch/
 gulp.task('sass', function() {
   gulp.src('src/sass/**/*.scss')
+      .pipe(plumber())
       .pipe(sass())
       .pipe(autoprefixer())
       .pipe(gulp.dest('./public'))
-      .pipe(browser.reload({stream:true}));
+      .pipe(connect.reload());
 });
 
 gulp.task('sass:watch', function() {
