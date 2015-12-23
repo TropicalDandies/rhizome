@@ -10,6 +10,7 @@ var del = require('del');
 var gulpif = require('gulp-if');
 var gutil = require('gulp-util');
 var plumber = require('gulp-plumber');
+var postcss = require('gulp-postcss');
 var sass = require('gulp-sass');
 var source = require('vinyl-source-stream');
 var sourcemaps = require('gulp-sourcemaps');
@@ -44,7 +45,7 @@ var destLocations = {
 var onError = function(err) {
   gutil.log(gutil.colors.red('ERROR', err.plugin), err.message);
   gutil.beep();
-  new gutil.PluginError(err.plugin, err, {showStack: true})
+  new gutil.PluginError(err.plugin, err, {showStack: true});
   // this.emit('end');
 };
 
@@ -75,8 +76,8 @@ gulp.task('copy', function(cb) {
 // BROWSERIFY/WATCHIFY
 // ////////////////////////////////////////////////
 var bundler = browserify({
-  basedir: './src/js/',
-  entries: ['main.js'],
+  basedir: 'src/js/',
+  entries: ['index.js'],
   debug: isDev
   // })
   // .transform(ngHtml2Js({
@@ -117,23 +118,15 @@ gulp.task('watchify', function() {
 });
 
 // ////////////////////////////////////////////////
-// LESS
+// SASS
 // ////////////////////////////////////////////////
-// Based on http://gotofritz.net/blog/geekery/how-to-prevent-less-errors-stopping-gulp-watch/
+// Based on http://gotofritz.net/blog/geekery/how-to-prevent-sass-errors-stopping-gulp-watch/
 gulp.task('sass', function() {
-  var sassArgs = {
-    paths: ['./src/sass/partials']
-  };
-
-  return gulp.src(['./src/sass/style.less'])
-  // .pipe(plumber())
-  .pipe(sourcemaps.init({loadMaps: true}))
-  .pipe(sass(sassArgs))
-  .on('error', onError)
-  .pipe(postcss([ autoprefixer({ browsers: ['last 2 versions'] }) ]))
-  .pipe(gulpif(isDev, sourcemaps.write()))
-  .pipe(gulp.dest(destLocations.sass))
-  .pipe(connect.reload());
+  gulp.src('src/sass/**/*.scss')
+      .pipe(sass())
+      .pipe(autoprefixer())
+      .pipe(gulp.dest('./public'))
+      .pipe(browser.reload({stream:true}));
 });
 
 gulp.task('sass:watch', function() {
@@ -148,7 +141,7 @@ gulp.task('sass:watch', function() {
 gulp.task('server', function() {
   connect.server({
     root: 'public',
-    port: 5000,
+    port: 5050,
     livereload: true
   });
 });
