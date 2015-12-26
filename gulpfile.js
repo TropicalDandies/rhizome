@@ -5,6 +5,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var browser = require('browser-sync');
+var concat = require('gulp-concat');
 var connect = require('gulp-connect');
 var del = require('del');
 var gulpif = require('gulp-if');
@@ -27,13 +28,18 @@ var copyLocations = [
     dest: './public/assets'
   },
   {
+    src: './libraries/**/*.js',
+    dest: './public/libraries'
+  },
+  {
     src: './src/index.html',
     dest: './public'
   }
 ];
 
 var watchLocations = {
-  sass: ['./src/sass/**/*.scss', '!./src/sass/partials']
+  sass: ['./src/sass/**/*.scss', '!./src/sass/partials'],
+  sketch: ['./src/js/sketch/**/*.js']
   // js: ''
 };
 
@@ -79,12 +85,6 @@ var bundler = browserify({
   basedir: 'src/js/',
   entries: ['index.js'],
   debug: isDev
-  // })
-  // .transform(ngHtml2Js({
-  // module: 'templates',
-  // extension: 'html'
-  // baseDir: './src/js/components/navbar'
-  // })
 });
 
 gulp.task('js', function() {
@@ -115,6 +115,23 @@ gulp.task('watchify', function() {
   .bundle()
   .pipe(source('bundle.js'))
   .pipe(gulp.dest('./public/js'));
+});
+
+// ////////////////////////////////////////////////
+// SKETCH
+// ////////////////////////////////////////////////
+gulp.task('sketch', function() {
+  gulp.src('src/js/sketch/**/*.js')
+      .pipe(plumber())
+      .pipe(concat('sketch.js'))
+      .pipe(gulp.dest('./public'))
+      .pipe(connect.reload());
+});
+
+gulp.task('sketch:watch', function() {
+  watch(watchLocations.sketch, function() {
+    gulp.start('sketch');
+  });
 });
 
 // ////////////////////////////////////////////////
@@ -163,6 +180,8 @@ gulp.task('dev', ['config:dev', 'clean'], function() {
   gulp.start('copy');
   gulp.start('sass');
   gulp.start('sass:watch');
+  gulp.start('sketch');
+  gulp.start('sketch:watch');
   gulp.start('watchify');
   gulp.start('server');
 });
