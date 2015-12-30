@@ -9,5 +9,4 @@ function setup() {
 
 function draw() {
   ellipse(a, a, 10, 10);
-
 }
