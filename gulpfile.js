@@ -32,7 +32,7 @@ var copyLocations = [
     dest: './public/libraries'
   },
   {
-    src: './src/index.html',
+    src: './src/*.html',
     dest: './public'
   }
 ];
@@ -120,12 +120,23 @@ gulp.task('watchify', function() {
 // ////////////////////////////////////////////////
 // SKETCH
 // ////////////////////////////////////////////////
+
+var subwindowNames = ['window-top-left', 'window-top-middle', 'window-top-right', 'window-middle-left', 'window-middle-middle', 'window-middle-right', 'window-bottom-left', 'window-bottom-middle', 'window-bottom-right'];
+
 gulp.task('sketch', function() {
-  gulp.src('src/js/sketch/**/*.js')
+  gulp.src('src/js/sketch/*.js')
       .pipe(plumber())
-      .pipe(concat('sketch.js'))
+      .pipe(concat('/js/sketch-main.js'))
       .pipe(gulp.dest('./public'))
       .pipe(connect.reload());
+
+  for (var i=0; i<subwindowNames.length; i++) {
+    gulp.src('src/js/sketch/' + subwindowNames[i] + '/*.js')
+        .pipe(plumber())
+        .pipe(concat('/js/sketch-' + subwindowNames[i] + '.js'))
+        .pipe(gulp.dest('./public'))
+        .pipe(connect.reload());
+  }
 });
 
 gulp.task('sketch:watch', function() {
