@@ -16,8 +16,9 @@
 </head>
 <body>
   <a onclick="launchWindows()" style="cursor: pointer;">Launch windows</a>
+  <a onclick="logdom()" style="cursor: pointer;">LOG IT</a>
   <script>
-    var main_window;
+    var w;
     function launchWindows() {
       window.open('window-top-middle.html', '', 'width=300,height=240,toolbar=no,scrollbars=no,location=no,top=0,left=600');
       window.open('window-middle-right.html', '', 'width=300,height=240,toolbar=no,scrollbars=no,location=no,top=300,left=900');
@@ -27,7 +28,11 @@
       window.open('window-top-right.html', '', 'width=300,height=240,toolbar=no,scrollbars=no,location=no,top=0,left=900');
       window.open('window-bottom-right.html', '', 'width=300,height=240,toolbar=no,scrollbars=no,location=no,top=600,left=900');
       window.open('window-bottom-left.html', '', 'width=300,height=240,toolbar=no,scrollbars=no,location=no,top=600,left=300');
-      main_window = window.open('window-middle-middle.html', '', 'width=300,height=240,toolbar=no,scrollbars=no,location=no,top=300,left=600');
+      w = window.open('window-middle-middle.html', '', 'width=300,height=240,toolbar=no,scrollbars=no,location=no,top=300,left=600');
+    }
+
+    function logdom() {
+        console.log($('#search-field', w.document).val());
     }
   </script>
 </body>
