@@ -39,8 +39,8 @@ var copyLocations = [
 
 var watchLocations = {
   sass: ['./src/sass/**/*.scss', '!./src/sass/partials'],
-  sketch: ['./src/js/sketch/**/*.js']
-  // js: ''
+  sketch: ['./src/js/sketch/**/*.js'],
+  js: ['./src/js/index.js']
 };
 
 var destLocations = {
@@ -115,6 +115,25 @@ gulp.task('watchify', function() {
   .bundle()
   .pipe(source('bundle.js'))
   .pipe(gulp.dest('./public/js'));
+});
+
+
+// ////////////////////////////////////////////////
+// SCRIPTS
+// ////////////////////////////////////////////////
+
+gulp.task('scripts', function() {
+  gulp.src('src/js/index.js')
+      .pipe(plumber())
+      .pipe(concat('/js/index.js'))
+      .pipe(gulp.dest('./public'))
+      .pipe(connect.reload());
+});
+
+gulp.task('scripts:watch', function() {
+  watch(watchLocations.js, function() {
+    gulp.start('scripts');
+  });
 });
 
 // ////////////////////////////////////////////////
@@ -193,6 +212,7 @@ gulp.task('dev', ['config:dev', 'clean'], function() {
   gulp.start('sass:watch');
   gulp.start('sketch');
   gulp.start('sketch:watch');
-  gulp.start('watchify');
+  gulp.start('scripts');
+  gulp.start('scripts:watch');
   gulp.start('server');
 });
